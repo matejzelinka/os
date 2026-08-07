@@ -1,0 +1,14 @@
+---
+import { Home,Inbox,CalendarDays,CalendarRange,FolderKanban,Workflow,Trash2 } from "lucide-react";
+const current=Astro.url.pathname;
+const menu=[
+ {icon:Home,text:"Přehled",href:"/"},
+ {icon:Inbox,text:"Inbox",href:"/inbox"},
+ {icon:CalendarDays,text:"Dnes",href:"/today"},
+ {icon:CalendarRange,text:"Nadcházející",href:"/upcoming"},
+ {icon:FolderKanban,text:"Projekty",href:"/projects"},
+ {icon:Workflow,text:"Workflow",href:"/workflows"},
+ {icon:Trash2,text:"Koš",href:"/trash"}
+];
+---
+<aside class="sticky top-0 hidden h-screen md:flex w-72 shrink-0 flex-col border-r bg-white p-6"><a href="/" class="mb-10 flex items-center gap-3 text-3xl font-bold"><span class="os-logo grid h-10 w-10 place-items-center rounded-xl bg-zinc-900 text-lg text-white">OS</span><span>Pracovní OS</span></a><nav class="space-y-1">{menu.map(item=>{const Icon=item.icon;const active=item.href==='/'?current==='/':current.startsWith(item.href);return <a href={item.href} class={`flex items-center gap-3 rounded-xl px-3 py-3 transition ${active?'bg-blue-50 font-semibold text-blue-700':'text-zinc-700 hover:bg-zinc-100'}`}><Icon size={20}/>{item.text}</a>})}</nav><div class="mt-auto px-3 text-xs leading-5 text-zinc-400">OS v2.0 Beta<br/>Lokální pracovní verze</div></aside>

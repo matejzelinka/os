@@ -1,0 +1,7 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Topbar from "../components/Topbar.astro";
+import WorkflowCreator from "../components/workflows/WorkflowCreator";
+---
+<Layout title="Workflow"><div class="flex"><Sidebar/><main class="min-w-0 flex-1"><Topbar/><div class="mx-auto max-w-6xl p-10"><WorkflowCreator client:only="react" /></div></main></div></Layout>
