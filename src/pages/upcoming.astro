@@ -1,0 +1,4 @@
+---
+import Layout from "../layouts/Layout.astro";import Sidebar from "../components/Sidebar.astro";import Topbar from "../components/Topbar.astro";import UpcomingPage from "../components/upcoming/UpcomingPage";
+---
+<Layout title="Nadcházející"><div class="flex"><Sidebar/><main class="min-w-0 flex-1"><Topbar/><div class="mx-auto max-w-6xl p-10"><UpcomingPage client:only="react"/></div></main></div></Layout>

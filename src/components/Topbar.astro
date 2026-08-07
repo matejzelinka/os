@@ -1,0 +1,8 @@
+---
+import AppControls from "./AppControls";
+---
+<header class="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white/90 px-4 backdrop-blur md:px-6 dark:border-zinc-800 dark:bg-zinc-950/90">
+  <a href="/" class="flex items-center gap-2 font-bold md:hidden"><span class="os-logo grid h-8 w-8 place-items-center rounded-lg bg-zinc-900 text-xs text-white">OS</span><span>Pracovní OS</span></a>
+  <div class="hidden text-sm text-zinc-400 md:block">Pracovní OS</div>
+  <AppControls client:only="react" />
+</header>

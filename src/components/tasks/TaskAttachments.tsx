@@ -1,0 +1,100 @@
+import { useEffect, useRef, useState } from "react";
+import {
+  Download,
+  FileText,
+  Image as ImageIcon,
+  Paperclip,
+  Trash2,
+  Upload,
+} from "lucide-react";
+import {
+  addAttachment,
+  deleteAttachment,
+  downloadAttachment,
+  getAttachments,
+  openAttachment,
+  type TaskAttachment,
+} from "@/lib/attachments";
+const size = (n: number) =>
+  n < 1048576 ? `${Math.ceil(n / 1024)} kB` : `${(n / 1048576).toFixed(1)} MB`;
+export default function TaskAttachments({ taskId }: { taskId: string }) {
+  const [items, setItems] = useState<TaskAttachment[]>([]),
+    [busy, setBusy] = useState(false),
+    input = useRef<HTMLInputElement>(null);
+  const load = async () => setItems(await getAttachments(taskId));
+  useEffect(() => {
+    load();
+  }, [taskId]);
+  async function files(l: FileList | null) {
+    if (!l?.length) return;
+    setBusy(true);
+    for (const f of Array.from(l)) await addAttachment(taskId, f);
+    await load();
+    setBusy(false);
+    if (input.current) input.current.value = "";
+  }
+  return (
+    <div className="rounded-2xl border bg-white p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm font-semibold">
+          <Paperclip size={17} />
+          Přílohy
+        </div>
+        <button
+          onClick={() => input.current?.click()}
+          className="flex items-center gap-1 rounded-lg border px-3 py-2 text-xs"
+        >
+          <Upload size={14} />
+          {busy ? "Ukládám…" : "Přidat"}
+        </button>
+      </div>
+      <input
+        ref={input}
+        type="file"
+        multiple
+        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+        className="hidden"
+        onChange={(e) => files(e.target.files)}
+      />
+      {items.length === 0 ? (
+        <div className="rounded-xl border border-dashed p-5 text-center text-xs text-zinc-400">
+          PDF, obrázek nebo jiný pracovní soubor
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {items.map((i) => (
+            <div
+              key={i.id}
+              className="flex items-center gap-3 rounded-xl bg-zinc-50 p-3"
+            >
+              {i.type.startsWith("image/") ? (
+                <ImageIcon size={18} />
+              ) : (
+                <FileText size={18} />
+              )}
+              <button
+                onClick={() => openAttachment(i)}
+                className="min-w-0 flex-1 text-left"
+              >
+                <div className="truncate text-sm font-medium">{i.name}</div>
+                <div className="text-xs text-zinc-400">{size(i.size)}</div>
+              </button>
+              <button onClick={() => downloadAttachment(i)}>
+                <Download size={16} />
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteAttachment(i.id);
+                  await load();
+                }}
+                className="text-red-500"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

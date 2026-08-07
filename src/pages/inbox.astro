@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Topbar from "../components/Topbar.astro";
+import InboxInput from "../components/inbox/InboxInput";
+---
+
+<Layout title="Inbox">
+
+<div class="flex">
+
+    <Sidebar />
+
+    <main class="min-w-0 flex-1">
+
+        <Topbar />
+
+        <div class="mx-auto max-w-5xl px-4 py-5 pb-24 sm:px-6 md:p-10">
+
+            <h1 class="text-3xl font-bold md:text-4xl">
+                Inbox
+            </h1>
+
+            <p class="mt-2 text-zinc-500">
+                Zachyť všechno, co tě napadne.
+            </p>
+
+            <div class="mt-5 md:mt-8">
+                <InboxInput client:only="react" />
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</Layout>

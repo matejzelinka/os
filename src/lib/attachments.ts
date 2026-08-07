@@ -1,0 +1,108 @@
+import { supabase } from "@/lib/supabase";
+import { currentUser } from "@/lib/sync";
+export interface TaskAttachment {
+  id: string;
+  taskId: string;
+  name: string;
+  type: string;
+  size: number;
+  createdAt: string;
+  blob: Blob;
+}
+const DB = "pracovni-os-files",
+  STORE = "attachments";
+function db(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const r = indexedDB.open(DB, 1);
+    r.onupgradeneeded = () => {
+      const d = r.result;
+      if (!d.objectStoreNames.contains(STORE)) {
+        const s = d.createObjectStore(STORE, { keyPath: "id" });
+        s.createIndex("taskId", "taskId");
+      }
+    };
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+}
+async function blobToData(blob: Blob) {
+  return await new Promise<string>((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result));
+    r.onerror = () => rej(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+export async function addAttachment(taskId: string, file: File) {
+  const d = await db(),
+    item: TaskAttachment = {
+      id: crypto.randomUUID(),
+      taskId,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      createdAt: new Date().toISOString(),
+      blob: file,
+    };
+  await new Promise<void>((res, rej) => {
+    const tx = d.transaction(STORE, "readwrite");
+    tx.objectStore(STORE).put(item);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+  try {
+    const u = await currentUser();
+    if (supabase && u && file.size <= 8 * 1024 * 1024)
+      await supabase
+        .from("os_files")
+        .upsert({
+          id: item.id,
+          user_id: u.id,
+          task_id: taskId,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          data: await blobToData(file),
+          created_at: item.createdAt,
+        });
+  } catch {}
+  return item;
+}
+export async function getAttachments(taskId: string) {
+  const d = await db();
+  return new Promise<TaskAttachment[]>((res, rej) => {
+    const r = d
+      .transaction(STORE)
+      .objectStore(STORE)
+      .index("taskId")
+      .getAll(taskId);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+export async function deleteAttachment(id: string) {
+  const d = await db();
+  return new Promise<void>((res, rej) => {
+    const tx = d.transaction(STORE, "readwrite");
+    tx.objectStore(STORE).delete(id);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+export async function deleteTaskAttachments(taskId: string) {
+  const a = await getAttachments(taskId);
+  await Promise.all(a.map((x) => deleteAttachment(x.id)));
+}
+export function openAttachment(i: TaskAttachment) {
+  const u = URL.createObjectURL(i.blob);
+  window.open(u, "_blank");
+  setTimeout(() => URL.revokeObjectURL(u), 60000);
+}
+export function downloadAttachment(i: TaskAttachment) {
+  const u = URL.createObjectURL(i.blob),
+    a = document.createElement("a");
+  a.href = u;
+  a.download = i.name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(u), 1000);
+}
