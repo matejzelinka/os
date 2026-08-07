@@ -1,4 +1,3 @@
-import { allWorkflows } from "@/store/workflows";
 import type { WorkflowTemplate } from "@/types/workflow";
 
 export interface PlannerResult {
@@ -8,7 +7,7 @@ export interface PlannerResult {
 }
 
 const KEYWORDS: Record<string, string[]> = {
-  "kulturni-akce": [
+  "publish-event": [
     "koncert",
     "divadlo",
     "ples",

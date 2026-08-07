@@ -30,7 +30,7 @@ export default function InboxInput() {
   return (
     <div className="space-y-6">
       <CaptureBox />
-      {inbox.length === 0 && (
+      {inbox.filter((item) => !item.deletedAt).length === 0 && (
         <div className="rounded-xl border border-dashed bg-white p-10 text-center text-zinc-500">
           Inbox je prázdný.
         </div>

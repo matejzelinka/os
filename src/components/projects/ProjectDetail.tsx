@@ -10,7 +10,7 @@ export default function ProjectDetail() {
     unassign = useInboxStore((s) => s.assignInboxToProject);
   const id = new URLSearchParams(window.location.search).get("id"),
     project = projects.find((p) => p.id === id),
-    items = inbox.filter((i) => i.projectId === id);
+    items = inbox.filter((i) => i.projectId === id && !i.deletedAt);
   const [pe, setPe] = useState(false),
     [pd, setPd] = useState(""),
     [te, setTe] = useState<string | null>(null),
