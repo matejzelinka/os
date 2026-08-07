@@ -1,10 +1,11 @@
 ---
-import { Home,Inbox,CalendarDays,CalendarRange,FolderKanban,Workflow,Trash2 } from "lucide-react";
+import { Home,Inbox,Calendar,CalendarDays,CalendarRange,FolderKanban,Workflow,Trash2 } from "lucide-react";
 const current=Astro.url.pathname;
 const menu=[
  {icon:Home,text:"Přehled",href:"/"},
  {icon:Inbox,text:"Inbox",href:"/inbox"},
  {icon:CalendarDays,text:"Dnes",href:"/today"},
+ {icon:Calendar,text:"Kalendář",href:"/calendar"},
  {icon:CalendarRange,text:"Nadcházející",href:"/upcoming"},
  {icon:FolderKanban,text:"Projekty",href:"/projects"},
  {icon:Workflow,text:"Workflow",href:"/workflows"},

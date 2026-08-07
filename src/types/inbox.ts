@@ -15,6 +15,14 @@ export interface InboxItem {
   priority: TaskPriority;
   dueDate?: string | null;
   reminderAt?: string | null;
+  repeatType?:
+    | "none"
+    | "daily"
+    | "weekly"
+    | "monthly"
+    | "yearly"
+    | "interval";
+  repeatInterval?: number;
   note?: string;
   subtasks?: Subtask[];
 }
@@ -23,6 +31,8 @@ export interface NewTaskOptions {
   priority?: TaskPriority;
   dueDate?: string | null;
   reminderAt?: string | null;
+  repeatType?: InboxItem["repeatType"];
+  repeatInterval?: number;
   note?: string;
   subtasks?: Subtask[];
 }

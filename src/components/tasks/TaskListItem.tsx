@@ -1,3 +1,4 @@
+import { Repeat } from "lucide-react";
 import { useProjectsStore } from "@/store/projects";
 import type { InboxItem } from "@/types/inbox";
 
@@ -26,10 +27,15 @@ export default function TaskListItem({
         className="mt-1 h-4 w-4"
       />
       <button onClick={onOpen} className="min-w-0 flex-1 text-left">
-        <div
-          className={`font-medium ${item.completed ? "line-through text-zinc-400" : ""}`}
-        >
-          {item.title}
+        <div className="flex items-center gap-2">
+          <div
+            className={`font-medium ${item.completed ? "line-through text-zinc-400" : ""}`}
+          >
+            {item.title}
+          </div>
+          {item.repeatType && item.repeatType !== "none" ? (
+            <Repeat size={14} className="text-zinc-400" />
+          ) : null}
         </div>
         <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-400">
           <span

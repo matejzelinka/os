@@ -92,6 +92,8 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
+      <CaptureBox />
+
       <section>
         <h1 className="text-4xl font-bold">Přehled</h1>
         <p className="mt-2 text-zinc-500">
@@ -142,10 +144,9 @@ export default function DashboardPage() {
         )}
       </section>
 
-      <CaptureBox />
-
       <section>
-        <div className="mb-4 flex items-center justify-between">
+        <h2 className="mb-4 text-xl font-bold">📊 Dnes</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <h2 className="text-xl font-bold">📁 Rozpracované projekty</h2>
           <a href="/projects" className="text-sm font-medium text-blue-600">
             Všechny projekty →

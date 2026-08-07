@@ -6,6 +6,7 @@ import {
   Flag,
   FolderKanban,
   Plus,
+  Repeat,
   Trash2,
   X,
 } from "lucide-react";
@@ -167,6 +168,52 @@ export default function TaskDrawer({
                 className="flex-1 bg-transparent text-sm outline-none"
               />
             </label>
+            <label className="flex items-center gap-3 border-b px-4 py-3">
+              <Repeat size={18} className="text-zinc-400" />
+              <span className="w-20 text-sm text-zinc-500">Opakovat</span>
+              <select
+                value={task.repeatType ?? "none"}
+                onChange={(e) =>
+                  update(task.id, {
+                    repeatType: e.target.value as
+                      | "none"
+                      | "daily"
+                      | "weekly"
+                      | "monthly"
+                      | "yearly"
+                      | "interval",
+                    repeatInterval:
+                      e.target.value === "interval"
+                        ? task.repeatInterval ?? 1
+                        : task.repeatInterval,
+                  })
+                }
+                className="flex-1 bg-transparent text-sm outline-none"
+              >
+                <option value="none">Nikdy</option>
+                <option value="daily">Denně</option>
+                <option value="weekly">Týdně</option>
+                <option value="monthly">Měsíčně</option>
+                <option value="yearly">Ročně</option>
+                <option value="interval">Každých X dní</option>
+              </select>
+            </label>
+            {task.repeatType === "interval" && (
+              <label className="flex items-center gap-3 border-b px-4 py-3">
+                <span className="w-20 text-sm text-zinc-500"></span>
+                <input
+                  type="number"
+                  min={1}
+                  value={task.repeatInterval ?? 1}
+                  onChange={(e) =>
+                    update(task.id, {
+                      repeatInterval: Math.max(1, Number(e.target.value) || 1),
+                    })
+                  }
+                  className="flex-1 bg-transparent text-sm outline-none"
+                />
+              </label>
+            )}
             <label className="flex items-center gap-3 border-b px-4 py-3">
               <Bell size={18} className="text-zinc-400" />
               <span className="w-20 text-sm text-zinc-500">Připomenout</span>
