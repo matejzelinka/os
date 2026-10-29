@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+import MobileNav from "../components/MobileNav";
+import SyncBootstrap from "../components/SyncBootstrap";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "OS MATY" } = Astro.props;
+---
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f4f5" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="OS MATY" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <title>{title}</title>
+
+  <script is:inline>
+    try {
+      const saved = localStorage.getItem("os-theme");
+      const dark = saved
+        ? saved === "dark"
+        : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      document.documentElement.classList.toggle("dark", dark);
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    } catch {}
+  </script>
+</head>
+<body class="bg-zinc-100 text-zinc-900">
+  <slot />
+  <MobileNav client:only="react" />
+  <SyncBootstrap client:only="react" />
+</body>
+</html>

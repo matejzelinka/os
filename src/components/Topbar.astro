@@ -1,0 +1,21 @@
+---
+import AppControls from "./AppControls";
+---
+<header class="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white/90 px-4 backdrop-blur md:px-6 dark:border-zinc-800 dark:bg-zinc-950/90">
+  <a href="/" class="os-mobile-brand flex items-center md:hidden" aria-label="OS MATY">
+    <img
+      src="/brand/os-maty-symbol-light.png"
+      alt="OS MATY"
+      class="os-brand-symbol os-brand-symbol-light"
+    />
+    <img
+      src="/brand/os-maty-symbol-dark.png"
+      alt="OS MATY"
+      class="os-brand-symbol os-brand-symbol-dark"
+    />
+  </a>
+
+  <div class="hidden text-sm text-zinc-400 md:block">OS MATY</div>
+
+  <AppControls client:only="react" />
+</header>

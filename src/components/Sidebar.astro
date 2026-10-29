@@ -1,0 +1,56 @@
+---
+import { Home, Inbox, Calendar, CalendarDays, FolderKanban, Workflow, Trash2 } from "lucide-react";
+
+const current = Astro.url.pathname;
+
+const menu = [
+  { icon: Home, text: "Přehled", href: "/" },
+  { icon: Inbox, text: "Inbox", href: "/inbox" },
+  { icon: CalendarDays, text: "Dnes", href: "/today" },
+  { icon: Calendar, text: "Kalendář", href: "/calendar" },
+  { icon: FolderKanban, text: "Projekty", href: "/projects" },
+  { icon: Workflow, text: "Workflow", href: "/workflows" },
+  { icon: Trash2, text: "Koš", href: "/trash" },
+];
+---
+<aside class="sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r bg-white p-6 md:flex dark:bg-zinc-950">
+  <a href="/" class="os-brand-link mb-10 flex items-center">
+    <img
+      src="/brand/os-maty-logo-light.png"
+      alt="OS MATY"
+      class="os-brand-logo os-brand-logo-light"
+    />
+    <img
+      src="/brand/os-maty-logo-dark.png"
+      alt="OS MATY"
+      class="os-brand-logo os-brand-logo-dark"
+    />
+  </a>
+
+  <nav class="space-y-1">
+    {menu.map((item) => {
+      const Icon = item.icon;
+      const active =
+        item.href === "/" ? current === "/" : current.startsWith(item.href);
+
+      return (
+        <a
+          href={item.href}
+          class={`flex items-center gap-3 rounded-xl px-3 py-3 transition ${
+            active
+              ? "bg-blue-50 font-semibold text-blue-700"
+              : "text-zinc-700 hover:bg-zinc-100"
+          }`}
+        >
+          <Icon size={20} />
+          {item.text}
+        </a>
+      );
+    })}
+  </nav>
+
+  <div class="mt-auto px-3 text-xs leading-5 text-zinc-400">
+    OS v2.0 Beta<br />
+    Lokální pracovní verze
+  </div>
+</aside>

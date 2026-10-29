@@ -1,0 +1,54 @@
+---
+import Card from "../ui/Card.astro";
+
+const projects = [
+    { name: "OS", progress: 20 },
+    { name: "Workshop CVVZ", progress: 70 },
+    { name: "RychlyOdvoz.cz", progress: 45 }
+];
+---
+
+<section class="mt-12">
+
+    <h2 class="mb-5 text-2xl font-bold">
+        🔥 Rozpracované projekty
+    </h2>
+
+    <Card class="p-6">
+
+        <div class="space-y-6">
+
+            {
+                projects.map(project => (
+
+                    <div>
+
+                        <div class="mb-2 flex justify-between">
+
+                            <span>{project.name}</span>
+
+                            <span class="text-zinc-500">
+                                {project.progress} %
+                            </span>
+
+                        </div>
+
+                        <div class="h-2 rounded-full bg-zinc-200">
+
+                            <div
+                                class="h-2 rounded-full bg-blue-600"
+                                style={`width:${project.progress}%`}
+                            />
+
+                        </div>
+
+                    </div>
+
+                ))
+            }
+
+        </div>
+
+    </Card>
+
+</section>
